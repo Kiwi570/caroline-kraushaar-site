@@ -1,17 +1,29 @@
-# Caroline Kraushaar, neuropsychologue — maquette du site
+# Caroline Kraushaar — Neuropsychologue à Ahetze
 
-Site statique, sans dépendance : `index.html`, le dossier `media/`, un favicon.
-Les six pages (Accueil, Bilans, Remédiation, Tarifs, À propos, Contact) sont dans `index.html`
-et se naviguent par l'adresse (`#bilans`, `#tarifs`, `#bilans/deroulement`…).
+Refonte Next.js de la maquette du cabinet de neuropsychologie Caroline Kraushaar.
 
-## Déployer sur Vercel
-1. Pousser ce dossier sur un dépôt Git.
-2. Sur Vercel : New Project → importer le dépôt → Framework preset « Other » → Deploy.
-   Aucune commande de build, aucun dossier de sortie à préciser.
+## Développement local
 
-## Avant la mise en ligne définitive
-- Remplacer les images provisoires par les vraies photos (étiquettes « Photo à réaliser » dans la maquette).
-- Retirer les notes destinées à la relecture (« Liste à valider… », « Formulations proposées… », « Image provisoire… »).
-- Brancher les formulaires (contact, être rappelé) sur un service d'envoi (Formspree, Vercel Forms, ou l'e-mail).
-- Intégrer une carte interactive sur la page Contact.
-- Ajouter les mentions légales et la politique de confidentialité.
+```bash
+npm ci
+npm run dev
+```
+
+Ouvrez ensuite `http://localhost:3000`.
+
+## Validation de production
+
+```bash
+npm run check
+```
+
+## Déploiement Vercel
+
+Importez le dépôt dans Vercel et laissez la plateforme détecter Next.js. La variable facultative `NEXT_PUBLIC_SITE_URL` permet d’indiquer le domaine public final utilisé par le sitemap et les métadonnées sociales.
+
+## Avant publication définitive
+
+- faire valider tous les textes cliniques, tarifs et modalités par la praticienne ;
+- remplacer les visuels provisoires par des photographies authentiques du cabinet et de Caroline ;
+- connecter le formulaire à une solution conforme aux exigences de confidentialité retenues par la praticienne ;
+- ajouter les mentions légales et la politique de confidentialité définitives.
