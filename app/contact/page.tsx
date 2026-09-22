@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { ArrowUpRight, Clock3, Mail, MapPin, Phone, Route, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, CalendarCheck, Car, Clock3, Mail, MapPin, Phone, Route, ShieldCheck } from 'lucide-react';
 
+import { Reveal } from '@/components/motion/reveal';
 import { ContactForm } from '@/components/site/contact-form';
 import { PageHero } from '@/components/site/page-hero';
-import { contact } from '@/lib/site-config';
+import { booking, cabinet, contact } from '@/lib/site-config';
 
 export const metadata: Metadata = {
   title: 'Contact et rendez-vous',
@@ -25,18 +26,28 @@ export default function ContactPage() {
 
       <section className="px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto grid max-w-[1344px] gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-          <aside className="grid gap-4 lg:sticky lg:top-28">
+          <Reveal as="aside" stagger={160} y={22} className="grid gap-4 lg:sticky lg:top-28">
+            {booking.url ? (
+              <article className="rounded-[1.75rem] bg-peach-pale p-7 sm:p-8">
+                <CalendarCheck className="size-5 text-water-dark" />
+                <h2 className="mt-5 font-serif text-3xl">Réserver un premier échange</h2>
+                <p className="mt-3 text-sm leading-7 text-ink/60">Choisissez un créneau directement dans l’agenda en ligne du cabinet.</p>
+                <a href={booking.url} target="_blank" rel="noreferrer" className="button-primary mt-6 w-full">
+                  {booking.label} <ArrowUpRight className="size-4" />
+                </a>
+              </article>
+            ) : null}
             <article className="rounded-[1.75rem] bg-water-dark p-7 text-white sm:p-8">
               <p className="text-xs font-bold uppercase tracking-[0.17em] text-water-light">Contact direct</p>
               <a
                 href={contact.phoneHref}
-                className="mt-7 flex items-center gap-3 font-serif text-2xl hover:text-water-light"
+                className="mt-7 flex items-center gap-3 font-serif text-2xl transition-colors duration-300 hover:text-water-light"
               >
                 <Phone className="size-5" /> {contact.phoneDisplay}
               </a>
               <a
                 href={`mailto:${contact.email}`}
-                className="mt-4 flex items-start gap-3 break-all text-sm leading-6 text-white/68 hover:text-white"
+                className="mt-4 flex items-start gap-3 break-all text-sm leading-6 text-white/68 transition-colors duration-300 hover:text-white"
               >
                 <Mail className="mt-0.5 size-5 shrink-0" /> {contact.email}
               </a>
@@ -47,7 +58,7 @@ export default function ContactPage() {
                 </p>
               </div>
             </article>
-            <article className="rounded-[1.75rem] border border-ink/10 bg-white p-7 sm:p-8">
+            <article className="lift rounded-[1.75rem] border border-ink/10 bg-white p-7 sm:p-8">
               <MapPin className="size-5 text-water-dark" />
               <h2 className="mt-5 font-serif text-3xl">Cabinet Landa Gaita</h2>
               <p className="mt-3 text-sm leading-7 text-ink/56">{contact.address}</p>
@@ -60,31 +71,40 @@ export default function ContactPage() {
                 <Route className="size-4" /> Ouvrir l’itinéraire <ArrowUpRight className="size-4" />
               </a>
             </article>
-          </aside>
-          <ContactForm />
+          </Reveal>
+          <Reveal scale={0.985} y={24} delay={120}>
+            <ContactForm />
+          </Reveal>
         </div>
       </section>
 
       <section className="bg-white px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto grid max-w-[1344px] items-center gap-12 lg:grid-cols-2">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] bg-sand shadow-soft">
+          <Reveal scale={0.97} y={0} className="relative aspect-[16/10] overflow-clip rounded-[2rem] bg-sand shadow-soft">
             <Image
               src="/media/image-12.jpg"
               alt="Salle d’attente du cabinet"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
+              className="parallax object-cover"
             />
-          </div>
-          <div>
+          </Reveal>
+          <Reveal stagger={140} delay={120} y={18}>
             <p className="eyebrow">Venir au cabinet</p>
             <h2 className="mt-5 font-serif text-[clamp(2.8rem,5vw,5rem)] leading-[0.96] tracking-[-0.045em]">
               À Ahetze, au cœur du Pays basque.
             </h2>
             <p className="mt-7 text-base leading-8 text-ink/60">
-              Le cabinet se situe à environ 15 minutes de Saint-Jean-de-Luz, 10 minutes de Bidart et de
-              Saint-Pée-sur-Nivelle, et 20 minutes de Biarritz.
+              Le cabinet {cabinet.name} accueille également une orthophoniste et une thérapeute : un lieu
+              calme, pensé pour les familles.
             </p>
+            <ul className="mt-6 grid gap-2 sm:grid-cols-2">
+              {cabinet.access.map((item) => (
+                <li key={item} className="flex items-center gap-3 rounded-xl bg-cream p-3 text-sm">
+                  <Car className="size-4 shrink-0 text-water-dark" /> {item}
+                </li>
+              ))}
+            </ul>
             <div className="mt-7 flex gap-3 rounded-2xl bg-water-pale p-5 text-sm leading-7 text-water-dark">
               <ShieldCheck className="mt-1 size-5 shrink-0" />
               <p>
@@ -92,7 +112,7 @@ export default function ContactPage() {
                 e-mail avant qu’un mode de transmission adapté vous soit proposé.
               </p>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
     </main>

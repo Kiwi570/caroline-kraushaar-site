@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, CheckCircle2, Compass } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Compass } from 'lucide-react';
 import { useState } from 'react';
+
+import { DrawnCheck } from '@/components/motion/drawn-check';
 
 type Answers = {
   audience?: 'enfant' | 'adolescent' | 'adulte';
@@ -87,7 +89,12 @@ export function Pathfinder() {
     <section className="overflow-hidden rounded-[2rem] bg-ink text-white shadow-soft" id="boussole">
       <div className="grid lg:grid-cols-[0.72fr_1.28fr]">
         <div className="border-b border-white/10 p-7 sm:p-10 lg:border-b-0 lg:border-r">
-          <Compass className="size-8 text-water-light" strokeWidth={1.5} />
+          {/* La boussole tourne d'un quart de tour à chaque réponse */}
+          <Compass
+            className="size-8 text-water-light transition-[rotate] duration-1000 ease-out-expo"
+            strokeWidth={1.5}
+            style={{ rotate: `${step * 90}deg` }}
+          />
           <p className="mt-7 text-[10px] font-semibold uppercase tracking-[0.18em] text-water-light">
             La boussole
           </p>
@@ -101,15 +108,17 @@ export function Pathfinder() {
             {questions.map((question, index) => (
               <span
                 key={question.key}
-                className={`h-1.5 flex-1 rounded-full ${index <= step ? 'bg-water-light' : 'bg-white/15'}`}
+                className={`h-1.5 flex-1 rounded-full transition-colors duration-700 ${
+                  index <= step ? 'bg-water-light' : 'bg-white/15'
+                }`}
               />
             ))}
           </div>
         </div>
         <div className="min-h-[430px] p-7 sm:p-10 lg:p-12">
           {result ? (
-            <div className="flex h-full flex-col justify-center">
-              <CheckCircle2 className="size-9 text-water-light" />
+            <div key="result" className="anim-scale flex h-full flex-col justify-center">
+              <DrawnCheck circle className="size-9 text-water-light" delay={200} />
               <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-water-light">
                 Votre orientation
               </p>
@@ -118,47 +127,50 @@ export function Pathfinder() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   href={result.href}
-                  className="inline-flex items-center gap-2 rounded-full bg-water px-5 py-3 text-sm font-bold hover:bg-water-light hover:text-ink"
+                  className="group inline-flex items-center gap-2 rounded-full bg-water px-5 py-3 text-sm font-bold transition-[background-color,color,transform] duration-500 ease-out-expo hover:-translate-y-0.5 hover:bg-water-light hover:text-ink"
                 >
-                  {result.label} <ArrowRight className="size-4" />
+                  {result.label}{' '}
+                  <ArrowRight className="size-4 transition-transform duration-500 ease-out-expo group-hover:translate-x-1" />
                 </Link>
                 <button
                   type="button"
                   onClick={reset}
-                  className="rounded-full border border-white/20 px-5 py-3 text-sm font-bold hover:bg-white/10"
+                  className="rounded-full border border-white/20 px-5 py-3 text-sm font-bold transition-colors duration-300 hover:bg-white/10"
                 >
                   Recommencer
                 </button>
               </div>
             </div>
           ) : (
-            <div>
+            <div key={`step-${step}`} className="anim-rise">
               {step > 0 ? (
                 <button
                   type="button"
                   onClick={() => setStep((current) => current - 1)}
-                  className="mb-8 inline-flex items-center gap-2 text-xs font-bold text-white/50 hover:text-white"
+                  className="group mb-8 inline-flex items-center gap-2 text-xs font-bold text-white/50 transition-colors hover:text-white"
                 >
-                  <ArrowLeft className="size-4" /> Retour
+                  <ArrowLeft className="size-4 transition-transform duration-500 ease-out-expo group-hover:-translate-x-1" />{' '}
+                  Retour
                 </button>
               ) : null}
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-water-light">
                 Question {step + 1} sur 3
               </p>
               <h3 className="mt-3 font-serif text-4xl">{questions[step].title}</h3>
-              <div className="mt-8 grid gap-3">
-                {questions[step].options.map(([value, label, detail]) => (
+              <div className="stagger-in mt-8 grid gap-3">
+                {questions[step].options.map(([value, label, detail], index) => (
                   <button
                     type="button"
                     key={value}
                     onClick={() => select(questions[step].key, value)}
-                    className="group flex items-center justify-between gap-5 rounded-2xl border border-white/15 bg-white/5 p-5 text-left transition hover:border-water-light hover:bg-white/10"
+                    style={{ animationDelay: `${120 + index * 80}ms` }}
+                    className="group flex items-center justify-between gap-5 rounded-2xl border border-white/15 bg-white/5 p-5 text-left transition-[border-color,background-color,transform] duration-500 ease-out-expo hover:-translate-y-0.5 hover:border-water-light hover:bg-white/10 active:scale-[0.99]"
                   >
                     <span>
                       <b className="block font-serif text-2xl font-normal">{label}</b>
-                      <small className="mt-1 block text-white/45">{detail}</small>
+                      <small className="mt-1 block text-white/60">{detail}</small>
                     </span>
-                    <ArrowRight className="size-5 text-water-light transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="size-5 text-water-light transition-transform duration-500 ease-out-expo group-hover:translate-x-1" />
                   </button>
                 ))}
               </div>

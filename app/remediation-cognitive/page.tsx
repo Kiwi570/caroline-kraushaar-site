@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Brain, CalendarClock, ListChecks, MemoryStick, ShieldCheck } from 'lucide-react';
 
+import { Reveal } from '@/components/motion/reveal';
 import { ContactCta } from '@/components/site/contact-cta';
 import { PageHero } from '@/components/site/page-hero';
 import { SectionHeading } from '@/components/site/section-heading';
@@ -41,7 +42,7 @@ export default function RemediationPage() {
     <main id="main">
       <PageHero
         eyebrow="Remédiation cognitive"
-        title="Entraîner ce qui peut l’être,"
+        title="Entraîner l’essentiel,"
         accent="contourner le reste."
         description="Après un bilan, un accompagnement personnalisé peut aider à entraîner certaines fonctions et à construire des stratégies réutilisables au quotidien."
         image="/media/image-07.jpg"
@@ -50,17 +51,17 @@ export default function RemediationPage() {
       />
       <section className="px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto grid max-w-[1344px] items-center gap-12 lg:grid-cols-2">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-sand shadow-soft">
+          <Reveal scale={0.97} y={0} className="relative aspect-[4/3] overflow-clip rounded-[2rem] bg-sand shadow-soft">
             <Image
               src="/media/image-08.jpg"
               alt="Exercices préparés pour une séance de remédiation cognitive"
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
+              className="parallax object-cover"
             />
-          </div>
-          <div>
+          </Reveal>
+          <Reveal stagger={140} delay={120} y={18}>
             <p className="eyebrow">Le principe</p>
             <h2 className="mt-5 font-serif text-[clamp(2.8rem,5vw,5rem)] leading-[0.96] tracking-[-0.045em]">
               Après le bilan, un programme sur mesure.
@@ -71,19 +72,21 @@ export default function RemediationPage() {
               concrètes pour l’école, le travail ou la maison.
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              <div className="rounded-2xl bg-water-pale p-5">
+              <div className="lift rounded-2xl bg-water-pale p-5">
                 <b className="font-serif text-3xl font-normal text-water-dark">40 €</b>
                 <small className="mt-1 block text-ink/50">Séance de 30 minutes</small>
               </div>
-              <div className="rounded-2xl bg-peach-pale p-5">
+              <div className="lift rounded-2xl bg-peach-pale p-5">
                 <b className="font-serif text-3xl font-normal">60 €</b>
                 <small className="mt-1 block text-ink/50">Séance d’une heure</small>
               </div>
             </div>
-            <Link href="/contact" className="button-primary mt-8">
-              Parler de mes besoins <ArrowRight className="size-4" />
-            </Link>
-          </div>
+            <div className="mt-8">
+              <Link href="/contact" className="button-primary">
+                Parler de mes besoins <ArrowRight className="size-4" />
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
       <section className="bg-white px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
@@ -93,20 +96,20 @@ export default function RemediationPage() {
             title="Des stratégies qui sortent du cabinet."
             description="Les fonctions travaillées dépendent du bilan et des situations concrètes qui posent problème au quotidien."
           />
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Reveal stagger={120} y={26} className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {functions.map(({ icon: Icon, title, text }) => (
-              <article key={title} className="rounded-[1.5rem] bg-cream p-7">
-                <Icon className="size-6 text-water-dark" />
+              <article key={title} className="lift group rounded-[1.5rem] bg-cream p-7">
+                <Icon className="size-6 text-water-dark transition-transform duration-700 ease-out-expo group-hover:-rotate-6 group-hover:scale-110" />
                 <h3 className="mt-7 font-serif text-3xl">{title}</h3>
                 <p className="mt-3 text-sm leading-7 text-ink/55">{text}</p>
               </article>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
       <section className="px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
-        <div className="mx-auto grid max-w-[1100px] gap-5 lg:grid-cols-2">
-          <article className="rounded-[1.75rem] border border-ink/10 bg-white p-8">
+        <Reveal stagger={160} y={26} className="mx-auto grid max-w-[1100px] gap-5 lg:grid-cols-2">
+          <article className="lift rounded-[1.75rem] border border-ink/10 bg-white p-8">
             <CalendarClock className="size-6 text-water-dark" />
             <h2 className="mt-6 font-serif text-3xl">Pour qui ?</h2>
             <p className="mt-4 text-sm leading-7 text-ink/58">
@@ -114,7 +117,7 @@ export default function RemediationPage() {
               difficultés d’attention, de mémoire ou d’organisation pèsent au quotidien.
             </p>
           </article>
-          <article className="rounded-[1.75rem] bg-water-dark p-8 text-white">
+          <article className="lift rounded-[1.75rem] bg-water-dark p-8 text-white">
             <ShieldCheck className="size-6 text-water-light" />
             <h2 className="mt-6 font-serif text-3xl">Avec qui ?</h2>
             <p className="mt-4 text-sm leading-7 text-white/62">
@@ -122,7 +125,7 @@ export default function RemediationPage() {
               professionnels afin que les stratégies se prolongent hors du cabinet.
             </p>
           </article>
-        </div>
+        </Reveal>
       </section>
       <ContactCta />
     </main>

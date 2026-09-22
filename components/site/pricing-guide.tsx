@@ -1,8 +1,9 @@
 'use client';
 
-import { CheckCircle2, HelpCircle } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import { useState } from 'react';
 
+import { DrawnCheck } from '@/components/motion/drawn-check';
 import { prices } from '@/lib/site-data';
 
 type Answer = 'oui' | 'non' | null;
@@ -93,20 +94,20 @@ export function PricingGuide() {
         aria-live="polite"
       >
         {recommendation ? (
-          <>
-            <CheckCircle2 className="size-8 text-water-light" />
+          <div key={recommendation.key + recommendation.price} className="anim-rise">
+            <DrawnCheck circle className="size-8 text-water-light" delay={150} />
             <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.17em] text-water-light">
               Première orientation
             </p>
             <h3 className="mt-3 font-serif text-4xl">{recommendation.title}</h3>
             <p className="mt-5 font-serif text-5xl text-peach">{recommendation.price}</p>
             <p className="mt-4 text-sm leading-7 text-white/60">{recommendation.note}</p>
-            <p className="mt-5 border-t border-white/12 pt-5 text-xs leading-6 text-white/40">
+            <p className="mt-5 border-t border-white/12 pt-5 text-xs leading-6 text-white/60">
               Cette indication est informative et ne remplace pas l’entretien initial.
             </p>
-          </>
+          </div>
         ) : (
-          <>
+          <div key="empty" className="anim-fade">
             <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-water-light">
               Orientation
             </p>
@@ -114,7 +115,7 @@ export function PricingGuide() {
             <p className="mt-5 text-sm leading-7 text-white/55">
               La ligne tarifaire la plus proche de votre situation apparaîtra ici.
             </p>
-          </>
+          </div>
         )}
       </div>
       {recommendation ? (

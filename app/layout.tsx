@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Instrument_Serif } from 'next/font/google';
 import localFont from 'next/font/local';
 
 import { SiteFooter } from '@/components/site/site-footer';
@@ -13,6 +14,14 @@ const geist = localFont({
   variable: '--font-geist',
   display: 'swap',
   weight: '100 900',
+});
+/* Serif de titrage : téléchargée au build par next/font, servie depuis le site (aucune requête externe). */
+const instrument = Instrument_Serif({
+  weight: '400',
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-instrument',
 });
 
 export const metadata: Metadata = {
@@ -65,8 +74,11 @@ const structuredData = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr" className={geist.variable} data-scroll-behavior="smooth">
+    <html lang="fr" className={`${geist.variable} ${instrument.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body>
+        {/* Pose la classe .js avant le premier rendu : les éléments révélés au scroll
+            ne sont masqués que si le JS est bien là (voir globals.css). */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
         <a href="#main" className="skip-link">
           Aller au contenu
         </a>

@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, BookOpen, GraduationCap, HeartHandshake, Network, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, GraduationCap, HeartHandshake, MapPin, Network, Sparkles, Users } from 'lucide-react';
 
+import { Reveal } from '@/components/motion/reveal';
 import { ContactCta } from '@/components/site/contact-cta';
 import { PageHero } from '@/components/site/page-hero';
 import { SectionHeading } from '@/components/site/section-heading';
+import { cabinet, contact } from '@/lib/site-config';
 
 export const metadata: Metadata = {
   title: 'À propos de Caroline Kraushaar',
@@ -69,7 +71,7 @@ export default function AboutPage() {
 
       <section className="px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto grid max-w-[1344px] items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <div>
+          <Reveal stagger={150} y={18}>
             <p className="eyebrow">Le parcours</p>
             <h2 className="mt-5 font-serif text-[clamp(2.8rem,5vw,5rem)] leading-[0.96] tracking-[-0.045em]">
               De la recherche à une pratique ancrée dans le quotidien.
@@ -79,16 +81,16 @@ export default function AboutPage() {
               travail ou à la maison. Cette double exigence — scientifique et humaine — guide chaque
               accompagnement.
             </p>
-          </div>
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-sand shadow-soft">
+          </Reveal>
+          <Reveal scale={0.97} y={0} delay={120} className="relative aspect-[4/3] overflow-clip rounded-[2rem] bg-sand shadow-soft">
             <Image
               src="/media/image-10.jpg"
               alt="Documents et matériel de consultation"
               fill
               sizes="(max-width: 1024px) 100vw, 45vw"
-              className="object-cover"
+              className="parallax object-cover"
             />
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -99,14 +101,13 @@ export default function AboutPage() {
             title="Un parcours entre France et Canada."
             description="Formation, recherche et pratique clinique nourrissent une approche structurée, toujours adaptée à la personne reçue."
           />
-          <div className="mt-12 border-l border-water/35 pl-6 sm:pl-10">
+          {/* La ligne verticale se trace, puis chaque étape apparaît */}
+          <Reveal stagger={260} y={18} className="timeline mt-12 pl-6 sm:pl-10">
             {timeline.map((item, index) => (
               <article key={item.title} className="relative pb-12 last:pb-0">
                 <span className="absolute -left-[2.12rem] top-1.5 size-4 rounded-full border-4 border-white bg-water sm:-left-[2.92rem]" />
                 <div className="grid gap-3 sm:grid-cols-[8rem_1fr] sm:gap-8">
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-water-dark">
-                    {item.period}
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-water-dark">{item.period}</p>
                   <div>
                     <div className="flex items-center gap-3">
                       <GraduationCap className="size-5 text-water-dark" />
@@ -118,7 +119,7 @@ export default function AboutPage() {
                 </div>
               </article>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -129,25 +130,49 @@ export default function AboutPage() {
             title="Du sens, avant les scores."
             description="Un test n’est jamais interprété seul. Les résultats prennent sens avec l’histoire, le contexte et les observations cliniques."
           />
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Reveal stagger={120} y={26} className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {values.map(({ icon: Icon, title, text }) => (
-              <article key={title} className="rounded-[1.5rem] border border-ink/10 bg-white p-7">
-                <span className="grid size-11 place-items-center rounded-2xl bg-water-pale text-water-dark">
+              <article key={title} className="lift group rounded-[1.5rem] border border-ink/10 bg-white p-7 hover:border-water/60">
+                <span className="grid size-11 place-items-center rounded-2xl bg-water-pale text-water-dark transition-[background-color,color] duration-500 group-hover:bg-water-dark group-hover:text-white">
                   <Icon className="size-5" />
                 </span>
                 <h2 className="mt-7 font-serif text-2xl">{title}</h2>
                 <p className="mt-3 text-sm leading-7 text-ink/55">{text}</p>
               </article>
             ))}
-          </div>
-          <div className="mt-10 flex flex-wrap gap-3">
+          </Reveal>
+          <Reveal y={16} delay={150} className="mt-10 flex flex-wrap gap-3">
             <Link href="/bilans" className="button-secondary">
               Comprendre les bilans <ArrowRight className="size-4" />
             </Link>
             <Link href="/contact" className="button-primary">
               Échanger sur votre situation <ArrowRight className="size-4" />
             </Link>
-          </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-white px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
+        <div className="mx-auto grid max-w-[1344px] gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+          <Reveal stagger={140} y={18}>
+            <p className="eyebrow">Le cabinet</p>
+            <h2 className="mt-5 font-serif text-[clamp(2.7rem,5vw,4.7rem)] leading-[0.96] tracking-[-0.045em]">
+              {cabinet.name}, à Ahetze.
+            </h2>
+            <p className="mt-6 text-base leading-8 text-ink/60">{cabinet.intro}</p>
+            <p className="mt-6 flex items-start gap-3 text-sm leading-7 text-ink/60">
+              <MapPin className="mt-1 size-4 shrink-0 text-water-dark" /> {contact.address}
+            </p>
+          </Reveal>
+          <Reveal stagger={120} y={22} delay={120} className="grid gap-3 sm:grid-cols-3">
+            {cabinet.team.map((member) => (
+              <article key={member.name} className="lift rounded-2xl bg-cream p-6">
+                <Users className="size-5 text-water-dark" />
+                <h3 className="mt-5 font-serif text-2xl">{member.name}</h3>
+                <p className="mt-2 text-sm leading-6 text-ink/60">{member.role}</p>
+              </article>
+            ))}
+          </Reveal>
         </div>
       </section>
 

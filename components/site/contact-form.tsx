@@ -46,18 +46,23 @@ export function ContactForm() {
           <h2 className="mt-2 font-serif text-4xl">Trois étapes, deux minutes.</h2>
         </div>
         <span className="rounded-full bg-water-pale px-3 py-1.5 text-xs font-bold text-water-dark">
-          {step}/3
+          <span key={step} className="anim-fade inline-block">
+            {step}/3
+          </span>
         </span>
       </div>
       <div className="mt-6 grid grid-cols-3 gap-2" aria-hidden="true">
         {[1, 2, 3].map((item) => (
-          <span key={item} className={`h-1.5 rounded-full ${item <= step ? 'bg-water' : 'bg-sand-dark'}`} />
+          <span
+            key={item}
+            className={`h-1.5 rounded-full transition-colors duration-700 ${item <= step ? 'bg-water' : 'bg-sand-dark'}`}
+          />
         ))}
       </div>
 
       <form className="mt-8" onSubmit={submit}>
         {step === 1 ? (
-          <div>
+          <div key="step-1" className="anim-rise">
             <fieldset>
               <legend className="font-semibold">La demande concerne</legend>
               <div className="mt-3 flex flex-wrap gap-2">
@@ -91,7 +96,7 @@ export function ContactForm() {
         ) : null}
 
         {step === 2 ? (
-          <div>
+          <div key="step-2" className="anim-rise">
             <label className="field-label" htmlFor="message">
               En quelques mots
             </label>
@@ -121,7 +126,7 @@ export function ContactForm() {
         ) : null}
 
         {step === 3 ? (
-          <div className="grid gap-5">
+          <div key="step-3" className="anim-rise grid gap-5">
             <div>
               <label className="field-label" htmlFor="name">
                 Votre nom
